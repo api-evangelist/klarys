@@ -1,0 +1,113 @@
+generated: '2026-08-17'
+method: probed
+status: unverified
+source: https://klarys.app/.well-known/oauth-authorization-server
+note: >-
+  READ THIS BEFORE TRUSTING THE MCP SIGNAL HERE. Klarys's own RFC 8414 authorization-server metadata
+  advertises `mcp:read` and `mcp:write` in scopes_supported, which is direct provider-published evidence
+  that a Model Context Protocol surface exists behind the tenant application. But NO MCP endpoint was
+  reachable anonymously on any probed path, so this artifact deliberately carries no endpoint and no
+  `MCPServer` pointer in apis.yml: an unverifiable URL would read as a callable agent surface, which is
+  the one mistake this pipeline must not make. Nothing here is derived from an OpenAPI — Klarys publishes
+  none — so there is no candidate tool list either. This is a lead for a re-run, not a server.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: oauth
+  verified: probed
+evidence:
+- kind: oauth-scopes
+  url: https://klarys.app/.well-known/oauth-authorization-server
+  status: 200
+  detail: 'scopes_supported: [groups, introspection, mcp:read, mcp:write, read, write]'
+- kind: oauth-endpoints
+  detail: >-
+    Authorization server at https://klarys.app/api/public/o with authorization_code + client_credentials
+    grants and PKCE S256 — the shape an MCP client would authorize against.
+probes:
+- url: https://klarys.app/mcp
+  method: GET
+  status: 302
+  result: miss
+  note: 302 to /fr/mcp/, which returns the 7,712-byte tenant SPA shell — a catch-all, not an MCP endpoint.
+- url: https://klarys.app/en/mcp/
+  method: POST
+  status: 403
+  result: miss
+  note: Django CSRF rejection of a POST to the SPA catch-all; no JSON-RPC handler.
+- url: https://klarys.app/api/mcp/
+  method: POST
+  status: 404
+  result: miss
+- url: https://klarys.app/api/public/mcp/
+  method: POST
+  status: 404
+  result: miss
+- url: https://klarys.app/api/mcp/mcp
+  method: GET
+  status: 404
+  result: miss
+- url: https://klarys.app/api/public/mcp/mcp/
+  method: GET
+  status: 404
+  result: miss
+- url: https://klarys.app/api/v2/mcp/
+  method: GET
+  status: 404
+  result: miss
+- url: https://klarys.app/api/public/mcp/sse
+  method: GET
+  status: 404
+  result: miss
+- url: https://klarys.app/api/public/sse
+  method: GET
+  status: 404
+  result: miss
+- url: https://klarys.app/api/agent/
+  method: GET
+  status: 404
+  result: miss
+- url: https://klarys.app/api/ai/
+  method: GET
+  status: 404
+  result: miss
+- url: https://klarys.app/.well-known/oauth-protected-resource
+  method: GET
+  status: 404
+  result: miss
+  note: >-
+    RFC 9728 protected-resource metadata is the standard way an MCP server points at its authorization
+    server. Its absence is why the endpoint cannot be discovered from the metadata document.
+- url: https://klarys.app/api/mcp/.well-known/oauth-protected-resource
+  method: GET
+  status: 404
+  result: miss
+- kind: dns
+  hosts:
+  - {host: mcp.klarys.io, result: NXDOMAIN}
+  - {host: mcp.klarys.app, result: NXDOMAIN}
+  - {host: ai.klarys.io, result: NXDOMAIN}
+  - {host: agent.klarys.io, result: NXDOMAIN}
+- kind: static-analysis
+  url: https://klarys.app/static/assets/index-CtRmw68t.js
+  status: 200
+  detail: >-
+    The 2.4 MB tenant application bundle contains zero case-insensitive occurrences of "mcp", so the
+    first-party web client does not call an MCP endpoint. The surface, if live, is exposed to external
+    agents only.
+tools: []
+tools_note: >-
+  No tool list. tools/list was never answered, no llms.txt is published to fall back to, and there is no
+  OpenAPI to derive candidate tools from. Input schemas would require authenticated introspection.
+recommendation: >-
+  Ask Klarys to publish the MCP endpoint URL and an RFC 9728 /.well-known/oauth-protected-resource
+  document. They have already done the hard part — an OAuth 2.0 authorization server with PKCE, dynamic
+  client registration and MCP scopes — and are losing every discovery point for want of two published
+  URLs.
+x-evidence:
+  fetched: '2026-08-17'
+  url: https://klarys.app/.well-known/oauth-authorization-server
+  http_status: 200
+  content_type: application/json

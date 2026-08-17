@@ -1,0 +1,107 @@
+generated: '2026-08-17'
+method: probed
+source: https://klarys.app/.well-known/oauth-authorization-server
+note: >-
+  Every assertion below is read from the RFC 8414 metadata document Klarys serves anonymously or from an
+  observed HTTP response. Klarys publishes no compliance program, certification list or trust center
+  (probe-security-programs.py returned trust=none), so no Compliance pointer is emitted. Industry
+  standards for the fresh-food supply chain are asserted only where Klarys states them publicly: it
+  announced a GS1 partnership and markets EDI and French electronic-invoicing support, but publishes no
+  machine-readable conformance evidence for either, so those rows are recorded as claimed-not-verified.
+standards:
+- id: oauth2
+  name: OAuth 2.0 (RFC 6749)
+  conforms: true
+  evidence: >-
+    Authorization server advertises authorization_code, client_credentials and refresh_token grants with
+    live authorize/token endpoints (302/405 on GET, i.e. present and POST-only).
+- id: rfc8414-as-metadata
+  name: OAuth 2.0 Authorization Server Metadata (RFC 8414)
+  conforms: true
+  evidence: >-
+    HTTP 200 application/json at /.well-known/oauth-authorization-server carrying issuer,
+    authorization_endpoint, token_endpoint, scopes_supported, grant_types_supported.
+- id: rfc7636-pkce
+  name: PKCE (RFC 7636)
+  conforms: true
+  evidence: code_challenge_methods_supported = ["S256"]
+- id: rfc7591-dynamic-client-registration
+  name: OAuth 2.0 Dynamic Client Registration (RFC 7591)
+  conforms: true
+  evidence: registration_endpoint = https://klarys.app/api/public/o/register/ (HTTP 405 on GET, POST-only)
+- id: rfc7009-token-revocation
+  name: OAuth 2.0 Token Revocation (RFC 7009)
+  conforms: true
+  evidence: revocation_endpoint = https://klarys.app/api/public/o/revoke_token/
+- id: rfc7662-token-introspection
+  name: OAuth 2.0 Token Introspection (RFC 7662)
+  conforms: true
+  evidence: >-
+    introspection_endpoint = https://klarys.app/api/public/o/introspect/ (HTTP 403 without credentials),
+    plus a dedicated "introspection" scope.
+- id: rfc9207-iss-parameter
+  name: OAuth 2.0 Authorization Server Issuer Identification (RFC 9207)
+  conforms: true
+  evidence: authorization_response_iss_parameter_supported = true
+- id: openid-connect-discovery
+  name: OpenID Connect Discovery 1.0
+  conforms: false
+  evidence: /.well-known/openid-configuration returns HTTP 404 on klarys.app and www.klarys.io
+- id: rfc9728-protected-resource-metadata
+  name: OAuth 2.0 Protected Resource Metadata (RFC 9728)
+  conforms: false
+  evidence: >-
+    /.well-known/oauth-protected-resource returns HTTP 404 at the root and under /api/public — an MCP
+    client cannot discover the authorization server from a resource URL.
+- id: rfc9116-security-txt
+  name: security.txt (RFC 9116)
+  conforms: false
+  evidence: /.well-known/security.txt returns HTTP 404 on both hosts
+- id: rfc9457-problem-details
+  name: Problem Details for HTTP APIs (RFC 9457)
+  conforms: false
+  evidence: >-
+    Observed error bodies use a proprietary envelope {"code":1003,"error":"...","user_message":"..."}
+    with Content-Type application/json, not application/problem+json.
+- id: openapi
+  name: OpenAPI
+  conforms: false
+  evidence: >-
+    A schema endpoint exists at https://klarys.app/api/schema/ but returns HTTP 401 for anonymous
+    callers; no OpenAPI document is published at any public URL.
+- id: mcp
+  name: Model Context Protocol
+  conforms: unverified
+  evidence: >-
+    scopes_supported includes mcp:read and mcp:write, so an MCP surface is implied by the provider's own
+    metadata, but no MCP endpoint responded to an anonymous tools/list on any probed path.
+- id: gs1
+  name: GS1 identification standards
+  conforms: claimed
+  evidence: >-
+    Klarys published an article announcing a GS1 partnership
+    (https://www.klarys.io/en/articles/joining-gs1-a-must) and its supplier interface generates SSCC
+    labels per the solutions page; no machine-readable conformance artifact is published.
+- id: edi
+  name: EDI (EDIFACT-class B2B messaging)
+  conforms: claimed
+  evidence: >-
+    The solutions page states "Our platform integrates with all your business systems and applications
+    via API and EDI"; no message catalog, guideline or spec is published.
+- id: facturation-electronique
+  name: French electronic invoicing (Factur-X / PDP regime)
+  conforms: claimed
+  evidence: >-
+    Klarys markets electronic-invoicing readiness for French retail
+    (https://www.klarys.io/en/articles/la-facturation-electronique-un-levier-de-performance); no
+    conformance evidence or Factur-X profile is published.
+summary:
+  conforms_true: 7
+  conforms_false: 5
+  claimed_unverified: 4
+  compliance_program_published: false
+  certifications: []
+x-evidence:
+  fetched: '2026-08-17'
+  url: https://klarys.app/.well-known/oauth-authorization-server
+  http_status: 200

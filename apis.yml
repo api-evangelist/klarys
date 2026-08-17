@@ -1,7 +1,16 @@
 aid: klarys
 name: Klarys
-description: 'Klarys is a company surfaced as a portfolio company of serena and added to the API Evangelist
-  network as a stub for enrichment. Sector: saas. This profile is a lead awaiting the enrichment pipeline.'
+description: 'Klarys — formerly ProcSea, renamed in 2023 — is a French SaaS eProcurement platform built
+  for the fresh-food supply chain: seafood, fruit and vegetables, meat and dairy. It connects retail, wholesale
+  and foodservice buyers with their suppliers, wholesalers and mareyeurs through a standardized fresh-food
+  product catalog, a supplier sales interface, a centralized purchasing interface, a central purchasing module
+  for store networks, a supplier invoicing module and a business-intelligence module. Klarys states that the
+  platform "integrates with all your business systems and applications via API and EDI" — ERP, accounting
+  tools and product reference systems. Founded in 2016 in Rennes, France with operations in Switzerland, it
+  is a Serena portfolio company, a member of the SAP.iO acceleration program and listed on the SAP Store. The
+  tenant application runs at klarys.app and publishes an RFC 8414 OAuth 2.0 authorization-server metadata
+  document anonymously — including mcp:read and mcp:write scopes — but no public API reference, OpenAPI, or
+  developer portal: the schema endpoint requires an authenticated tenant account.'
 url: https://raw.githubusercontent.com/api-evangelist/klarys/refs/heads/main/apis.yml
 x-type: company
 x-source: serena-portfolio
@@ -10,15 +19,126 @@ x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-08-17'
 modified: '2026-08-17'
+image: https://cdn.prod.website-files.com/645262ac6eca60aef2a6ff24/6487761d3ac838e6ec321735_klarys%20the%20fresh%20food%20platform.webp
 tags:
 - Company
-- Saas
-apis: []
+- SaaS
+- eProcurement
+- Procurement
+- Supply Chain
+- Food and Beverage
+- Seafood
+- Fresh Food
+- Retail
+- EDI
+- Invoicing
+- France
+apis:
+- name: Klarys Platform API
+  description: 'The API surface behind the Klarys tenant application at klarys.app. Klarys markets API and
+    EDI integration with customer ERP, accounting and product-reference systems, and the application serves
+    an anonymous RFC 8414 OAuth 2.0 authorization-server metadata document at
+    https://klarys.app/.well-known/oauth-authorization-server (issuer https://klarys.app/api/public/o) with
+    authorization_code, client_credentials and refresh_token grants, PKCE S256, dynamic client registration,
+    token revocation and introspection. No public API reference, OpenAPI document or developer portal was
+    found: the schema endpoint at https://klarys.app/api/schema/ returns HTTP 401
+    {"code":1003,"error":"User is unauthenticated"}, so the contract is customer-gated.'
+  humanURL: https://www.klarys.io/en/solutions
+  baseURL: https://klarys.app/api/
+  tags:
+  - eProcurement
+  - Supply Chain
+  - Fresh Food
+  properties:
+  - type: Authentication
+    url: authentication/klarys-authentication.yml
+  - type: OAuthScopes
+    url: scopes/klarys-scopes.yml
+  - type: ErrorCatalog
+    url: errors/klarys-problem-types.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/klarys-domain-security.yml
 - type: Website
   url: https://www.klarys.io/
+- type: Support
+  url: https://www.klarys.io/en/service-client
+- type: Contact
+  url: https://www.klarys.io/en/contact
+- type: Blog
+  url: https://www.klarys.io/en/resources
+- type: Press
+  url: https://www.klarys.io/en/press
+- type: CaseStudies
+  url: https://www.klarys.io/en/case-studies
+- type: About
+  url: https://www.klarys.io/en/who-are-we
+- type: GitHubOrganization
+  url: https://github.com/procsea
+- type: Login
+  url: https://klarys.app/fr/accounts/login/
+- type: TermsOfService
+  url: https://www.klarys.io/en/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.klarys.io/en/privacy-policy
+- type: Legal
+  url: https://www.klarys.io/en/legal-notice
+- type: StatusPage
+  url: https://status.klarys.io/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/klarys/
+- type: Twitter
+  url: https://twitter.com/klarys_io
+- type: Youtube
+  url: https://www.youtube.com/@klarys_io
+- type: WellKnown
+  url: well-known/klarys-well-known.yml
+- type: Authentication
+  url: authentication/klarys-authentication.yml
+- type: OAuthScopes
+  url: scopes/klarys-scopes.yml
+- type: Conformance
+  url: conformance/klarys-conformance.yml
+- type: ErrorCatalog
+  url: errors/klarys-problem-types.yml
+- type: Conventions
+  url: conventions/klarys-conventions.yml
+- type: Lifecycle
+  url: lifecycle/klarys-lifecycle.yml
+- type: Packages
+  url: packages/klarys-packages.yml
+- type: LLMsTxt
+  url: llms/klarys-llms.txt
+- type: Plans
+  url: plans/klarys-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/klarys-rate-limits.yml
+x-enrichment:
+  date: '2026-08-17'
+  status: minimal
+  artifacts_added: 14
+  pass: local-v1
+x-coverage:
+  state: gated
+  reason: customer-only-docs
+  detail: >-
+    Klarys runs a Django REST Framework API with a live OpenAPI schema endpoint, but
+    https://klarys.app/api/schema/?format=json answers HTTP 401
+    {"code":1003,"error":"User is unauthenticated"} with Content-Type application/vnd.oai.openapi+json —
+    the spec is real and served only to an authenticated tenant, and there is no developer portal, API
+    reference or pricing page anywhere on www.klarys.io (all 134 sitemap URLs walked).
+  evidence:
+  - url: https://klarys.app/api/schema/?format=json
+    status: 401
+  - url: https://klarys.app/.well-known/oauth-authorization-server
+    status: 200
+  - url: https://www.klarys.io/llms.txt
+    status: 404
+  - url: https://klarys.app/.well-known/oauth-protected-resource
+    status: 404
+  checked: '2026-08-17'

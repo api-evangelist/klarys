@@ -1,0 +1,47 @@
+generated: '2026-08-17'
+method: probed
+source: observed response headers from https://klarys.app
+limit_count: 0
+headers: []
+status_on_exhaustion: null
+retry_after: false
+note: >-
+  Klarys documents no rate limits and signals none at runtime. There is no public API reference to read
+  limits from (the schema endpoint is customer-gated), and no rate-limit headers were present on any
+  anonymous response observed — including the 200 on
+  https://klarys.app/.well-known/oauth-authorization-server, whose full header set is
+  date, content-type, server: cloudflare, access-control-allow-origin, cache-control, vary,
+  strict-transport-security, x-content-type-options, cf-cache-status. No RateLimit-*, X-RateLimit-*,
+  RateLimit-Policy or Retry-After anywhere. The terms of service reference an API (Article 4.8.b) but set
+  no quantitative usage limits. An agent calling this API has no way to learn its budget before being
+  refused, and no documented signal to back off on. An honest zero.
+limits: []
+observed_headers:
+  url: https://klarys.app/.well-known/oauth-authorization-server
+  status: 200
+  rate_limit_headers_present: false
+  present:
+  - date
+  - content-type
+  - server
+  - access-control-allow-origin
+  - cache-control
+  - vary
+  - strict-transport-security
+  - x-content-type-options
+  - cf-cache-status
+edge_note: >-
+  klarys.app sits behind Cloudflare in front of a Google-hosted origin (via: 1.1 google). Cloudflare may
+  apply platform-level protection, but nothing is advertised to the caller, so no limit can be recorded as
+  a provider contract.
+gaps:
+- No published rate limits or fair-use policy.
+- No RFC 9239-style RateLimit-* / RateLimit-Policy headers.
+- No Retry-After on any observed refusal.
+x-evidence:
+  fetched: '2026-08-17'
+  probes:
+  - url: https://klarys.app/.well-known/oauth-authorization-server
+    status: 200
+  - url: https://www.klarys.io/en/terms-of-service
+    status: 200

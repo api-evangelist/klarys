@@ -1,0 +1,72 @@
+generated: '2026-08-17'
+method: searched
+source: https://github.com/procsea + https://pypi.org/pypi/django-remove-field/json
+note: >-
+  No first-party client library for the Klarys API exists in any public registry. npm, PyPI, RubyGems,
+  crates.io, Maven Central, NuGet, Packagist and pkg.go.dev were checked for klarys/procsea-named
+  packages and every lookup 404d. The Klarys GitHub organization (github.com/procsea, display name
+  "Klarys", 2 public repositories) publishes one first-party open-source Django utility and one fork of a
+  third-party library — neither is an SDK for the Klarys API. No `SDKs` pointer is emitted, because
+  nothing here lets a developer call the Klarys API.
+packages:
+- language: python
+  registry: pypi
+  name: django-remove-field
+  url: https://pypi.org/project/django-remove-field/
+  repository: https://github.com/procsea/django-remove-field
+  install: pip install django-remove-field
+  official: true
+  official_evidence: >-
+    PyPI metadata names the author "Klarys Tech Team" with author_email tech@klarys.io, and the GitHub
+    repo lives in the Klarys organization.
+  client_library: false
+  purpose: >-
+    Internal engineering tool — "Handle deletion of django model field without downtime". It is a
+    contribution to the Django ecosystem, not a way to consume the Klarys API.
+  version: 0.3.0
+  published: '2025-11-26'
+  requires_python: '>=3.11'
+- language: python
+  registry: null
+  name: DRF-API-Logger
+  url: https://github.com/procsea/DRF-API-Logger
+  install: null
+  official: false
+  official_evidence: >-
+    A fork held in the Klarys GitHub organization of the third-party project DRF-API-Logger ("An API
+    Logger for your Django Rest Framework project"), not published to PyPI under Klarys. Last pushed
+    2022-11-10.
+  client_library: false
+  version: null
+  published: null
+  note: >-
+    Recorded because it is public in the provider's org and it corroborates the stack — the Klarys API is
+    Django REST Framework, which is consistent with the drf-spectacular schema endpoint observed at
+    /api/schema/ and the Django OAuth Toolkit metadata at /api/public/o/.
+registries_checked:
+- registry: pypi
+  queries:
+  - {name: klarys, status: 404}
+  - {name: procsea, status: 404}
+  - {name: klarys-sdk, status: 404}
+  - {name: klarys-api, status: 404}
+  - {name: django-remove-field, status: 200}
+- registry: npm
+  queries:
+  - {name: klarys, status: 404}
+  - {name: '@klarys/sdk', status: 404}
+  - {name: procsea, status: 404}
+summary:
+  package_count: 2
+  official_count: 1
+  client_library_count: 0
+  sdk_languages: []
+x-evidence:
+  fetched: '2026-08-17'
+  probes:
+  - url: https://api.github.com/orgs/procsea/repos
+    status: 200
+  - url: https://pypi.org/pypi/django-remove-field/json
+    status: 200
+  - url: https://registry.npmjs.org/klarys
+    status: 404

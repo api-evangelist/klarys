@@ -1,0 +1,110 @@
+generated: '2026-08-17'
+method: probed
+source: observed HTTP behaviour of https://klarys.app plus https://klarys.app/.well-known/oauth-authorization-server
+note: >-
+  Klarys publishes no API reference, so nothing here is quoted from documentation — every convention below
+  was observed on a live anonymous request or read from the RFC 8414 metadata document. Fields Klarys does
+  not expose anonymously are recorded as unknown rather than guessed. In particular there is NO evidence
+  of idempotency support, so no Idempotency pointer is emitted for this provider.
+authentication:
+  style: oauth2-bearer
+  issuer: https://klarys.app/api/public/o
+  token_endpoint: https://klarys.app/api/public/o/token/
+  grants:
+  - authorization_code
+  - client_credentials
+  - refresh_token
+  pkce: S256
+  dynamic_client_registration: true
+  session_alternative: >-
+    The tenant SPA authenticates with a Django session cookie (sessionid + csrftoken) via
+    https://klarys.app/fr/accounts/login/; the OAuth server is the machine-facing path.
+  artifact: authentication/klarys-authentication.yml
+idempotency:
+  supported: unknown
+  evidence: >-
+    No idempotency key header, parameter or documentation was found. The API reference is customer-gated,
+    so this is unmeasured rather than absent — but nothing public asserts it.
+  header: null
+pagination:
+  style: unknown
+  evidence: No public reference or spec to read pagination parameters from.
+versioning:
+  scheme: unknown
+  evidence: >-
+    The API root is /api/ with no version segment observed in any public path; the OAuth namespace is
+    /api/public/o/. A `source-version` response header carries a git SHA and a `previous-release-tag`
+    header carries a release tag (observed: prod-release-646-a7db7092), which is a deployment identifier,
+    not an API version contract.
+  release_headers:
+  - source-version
+  - previous-release-tag
+content_negotiation:
+  request_format_param: format
+  evidence: >-
+    /api/schema/?format=json returns a JSON error envelope with Content-Type
+    application/vnd.oai.openapi+json, while the same path without ?format returns HTTP 500 — a query-string
+    format selector in the Django REST Framework / drf-spectacular style.
+  accept_header_honored: partial
+  accept_header_note: >-
+    Accept: application/json is ignored on 404/403/405/500 paths, which return branded HTML.
+localization:
+  languages_observed:
+  - fr
+  - en
+  - de
+  - it
+  default: fr
+  mechanism: >-
+    URL language prefix (/fr/, /en/, /de/, /it/) on the application surface plus a django_language cookie;
+    responses carry Content-Language and Vary: Accept-Language, Cookie, Authorization, origin,
+    Accept-Encoding. Error `user_message` values are localized; `error` values are not.
+error_envelope:
+  application_api: '{"code": <int>, "error": <string>, "user_message": <localized string>}'
+  oauth2: '{"error": <RFC 6749 code>}'
+  rfc9457: false
+  artifact: errors/klarys-problem-types.yml
+rate_limit_signaling:
+  headers_observed: []
+  evidence: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After headers were present on any observed anonymous 200 or
+    error response.
+  artifact: rate-limits/klarys-rate-limits.yml
+tracing:
+  request_id_header: null
+  observed_headers:
+  - cf-ray
+  - nel
+  - report-to
+  note: >-
+    cf-ray is a Cloudflare edge identifier, not a provider-issued request id; Klarys exposes no
+    correlation header of its own on anonymous responses.
+transport:
+  https_only: true
+  http2: true
+  hsts: true
+  hsts_max_age: 60
+  hsts_note: >-
+    The application host klarys.app sets a 60-second HSTS max-age, far below the 31,536,000 seconds the
+    marketing host www.klarys.io sets and below the RFC 6797 / preload-list expectation. Worth reporting.
+  cors:
+    access_control_allow_origin: '*'
+    observed_on: /.well-known/oauth-authorization-server
+  edge: cloudflare
+  origin: 'google (via: 1.1 google)'
+cross_links:
+  authentication: authentication/klarys-authentication.yml
+  scopes: scopes/klarys-scopes.yml
+  errors: errors/klarys-problem-types.yml
+  lifecycle: lifecycle/klarys-lifecycle.yml
+  rate_limits: rate-limits/klarys-rate-limits.yml
+  well_known: well-known/klarys-well-known.yml
+x-evidence:
+  fetched: '2026-08-17'
+  probes:
+  - url: https://klarys.app/.well-known/oauth-authorization-server
+    status: 200
+  - url: https://klarys.app/api/schema/?format=json
+    status: 401
+  - url: https://klarys.app/api/public/
+    status: 404

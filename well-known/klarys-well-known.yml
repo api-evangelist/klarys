@@ -1,0 +1,67 @@
+generated: '2026-08-17'
+method: probed
+source: live GET of /.well-known/* on every Klarys host
+note: >-
+  One real document was served: the RFC 8414 OAuth 2.0 authorization-server metadata at
+  https://klarys.app/.well-known/oauth-authorization-server (HTTP 200, application/json, 1060 bytes,
+  Access-Control-Allow-Origin *, Cache-Control max-age=3600 public). It is served both at the host root
+  and under the issuer path /api/public/o/.well-known/oauth-authorization-server. Everything else 404d.
+  IMPORTANT — false-positive control: klarys.app answers HTTP 200 with the tenant single-page-app shell
+  (7,712 bytes of HTML) for ANY path under a language prefix (/en/..., /fr/...), so /en/mcp/ and /en/docs/
+  return 200 without a document behind them. Those are recorded as SPA-shell misses, not hits. Unprefixed
+  paths such as /.well-known/* are handled by Django and return honest 404s.
+hosts:
+- host: https://klarys.app
+  documents:
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    file: klarys-oauth-authorization-server.json
+    spec: RFC 8414
+  - path: /api/public/o/.well-known/oauth-authorization-server
+    status: 200
+    content_type: application/json
+    note: same document, served under the issuer path
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: RFC 9728 protected-resource metadata is not served, at the root or under /api/public
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://www.klarys.io
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+summary:
+  hits: 1
+  misses: 15
+  security_txt: false
+  agent_card: false
+  openid_configuration: false
+  oauth_authorization_server: true
+x-evidence:
+  fetched: '2026-08-17'
+  url: https://klarys.app/.well-known/oauth-authorization-server
+  http_status: 200
+  content_type: application/json

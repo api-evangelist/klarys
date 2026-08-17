@@ -1,0 +1,37 @@
+generated: '2026-08-17'
+method: searched
+source: https://www.klarys.io/en/solutions
+plan_count: 0
+pricing_page: null
+model: contact-sales
+currency: null
+note: >-
+  Klarys publishes no pricing page and no plan tiers. All 134 URLs in
+  https://www.klarys.io/sitemap.xml were walked (both the French and English trees) and there is no
+  /pricing, /tarifs, /plans or /offres page; the site's only conversion path is "Book a demo" at
+  https://www.klarys.io/en/contact, with sales phone numbers for France (+33 2 30 96 44 42) and
+  Switzerland (+41 21 519 05 39) on the customer-service page. Third-party software directories
+  (Capterra, GetApp) also list no price for Klarys. The terms of service define fees as agreed per
+  contract rather than by published tier. This is an honest zero: an enterprise contact-sales motion,
+  not a missed page.
+plans: []
+signals:
+- kind: no-pricing-page
+  detail: No pricing/tarifs/plans/offres URL exists in the sitemap (134 URLs).
+- kind: demo-gate
+  url: https://www.klarys.io/en/contact
+  status: 200
+  detail: '"Book a demo" form is the only commercial entry point.'
+- kind: marketplace-listing
+  url: https://store.sap.com/dcp/en/product/display-0000060188_live_v1/procsea-digitize-your-food-procurement-process
+  status: 200
+  detail: >-
+    Klarys is listed on the SAP Store as an SAP.iO partner; the listing is a contact/lead surface and
+    publishes no price either.
+x-evidence:
+  fetched: '2026-08-17'
+  probes:
+  - url: https://www.klarys.io/sitemap.xml
+    status: 200
+  - url: https://www.klarys.io/en/contact
+    status: 200

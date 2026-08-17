@@ -1,0 +1,75 @@
+generated: '2026-08-17'
+method: searched
+source: https://www.klarys.io/en/terms-of-service
+note: >-
+  Klarys operates a status page on its own subdomain but publishes no versioning policy, no deprecation or
+  sunset policy, and no SLA. The terms of service are explicit on the last point, so this is a documented
+  absence rather than an unmeasured one. No Deprecation pointer is emitted.
+versioning:
+  scheme: unknown
+  current: null
+  docs: null
+  evidence: >-
+    No version segment is observed in any public API path (root is /api/, OAuth at /api/public/o/) and no
+    versioning policy is published. Deployment identifiers appear as `source-version` and
+    `previous-release-tag` response headers (observed prod-release-646-a7db7092), which are release
+    markers, not an API version contract.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  evidence: >-
+    No Sunset or Deprecation response header (RFC 8594) was observed on any anonymous response. Terms of
+    service Article 25 reserves the right to modify the service but sets no deprecation notice period.
+sla:
+  url: null
+  uptime_target: null
+  published: false
+  evidence: >-
+    Terms of service Article 12.1: "KLARYS does its best to ensure the availability of the Service and
+    error-free transmissions. However, due to the nature of the internet, this cannot be guaranteed." No
+    uptime percentage, credit regime or support response time is committed anywhere public.
+  maintenance: >-
+    Article 12.1 states access "may occasionally be suspended or limited to allow for repairs,
+    maintenance, or the addition of new features" and commits to "limit the frequency and duration of
+    these suspensions", with no scheduled window published.
+status_page: https://status.klarys.io/
+status_page_detail:
+  url: https://status.klarys.io/
+  http_status: 200
+  resolves_to: https://procsea.notion.site/Klarys-status-page-32564a50d81543d4a0de948a121a1c73
+  platform: Notion
+  machine_readable: false
+  note: >-
+    status.klarys.io is a provider-owned subdomain that 302s to a Notion page titled "Klarys status page".
+    The page renders client-side, so a fetch returns the generic Notion application shell with no
+    component list, incident history or uptime data legible to a machine — there is no status JSON/RSS
+    endpoint of the kind Statuspage.io or Instatus expose. The surface exists; it is not consumable by an
+    agent.
+api_terms:
+  reference: >-
+    Terms of service Article 4.8.b refers to the "programming interface ('API') made available through the
+    Site or the Platform" — the provider's own confirmation that an API exists — but sets no quantitative
+    usage limits.
+  usage_limits_published: false
+changelog:
+  published: false
+  evidence: >-
+    No changelog, release-notes or what's-new page was found on www.klarys.io (134 sitemap URLs walked),
+    on klarys.app, or on the status page. Product announcements appear only as dated press releases at
+    https://www.klarys.io/en/press.
+legal_entity:
+  name: Procsea SA
+  trading_as: KLARYS
+  address: 4 rue Jean Lemaistre, 35000 Rennes, France
+  registration: RCS Rennes 820 559 110
+  source: https://www.klarys.io/en/terms-of-service
+deprecated_operations: []
+x-evidence:
+  fetched: '2026-08-17'
+  probes:
+  - url: https://status.klarys.io/
+    status: 200
+  - url: https://www.klarys.io/en/terms-of-service
+    status: 200

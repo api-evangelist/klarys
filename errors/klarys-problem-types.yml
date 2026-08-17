@@ -1,0 +1,108 @@
+generated: '2026-08-17'
+method: probed
+source: observed HTTP responses from https://klarys.app/api/ and https://klarys.app/api/public/o/
+format: proprietary
+format_note: >-
+  Not RFC 9457. The Klarys application API returns a proprietary JSON envelope with three fields — a
+  numeric `code`, a machine `error` string, and a localized `user_message` intended for display to the
+  end user (observed in French; the app negotiates language via the Accept-Language header and a
+  django_language cookie). The OAuth 2.0 endpoints under /api/public/o/ use the separate, standard
+  RFC 6749 §5.2 error envelope instead, so the provider runs two error shapes side by side.
+  There is no published error reference to enrich this from; every row below was observed live and
+  anonymously. No error code list is documented, so this catalog is a floor, not the registry.
+envelopes:
+- name: application-api
+  applies_to: https://klarys.app/api/
+  content_type: application/json
+  fields:
+  - name: code
+    type: integer
+    note: proprietary numeric error code; no published registry
+  - name: error
+    type: string
+    note: machine-readable English message
+  - name: user_message
+    type: string
+    note: localized message intended for display to the end user
+  example: '{"code": 1003, "error": "User is unauthenticated", "user_message": "Vous devez être connecté"}'
+- name: oauth2
+  applies_to: https://klarys.app/api/public/o/
+  content_type: application/json
+  spec: RFC 6749 section 5.2
+  fields:
+  - name: error
+    type: string
+    note: OAuth 2.0 error code
+  example: '{"error": "invalid_client"}'
+problems:
+- status: 401
+  code: 1003
+  error: User is unauthenticated
+  user_message: Vous devez être connecté
+  envelope: application-api
+  observed_at: https://klarys.app/api/schema/?format=json
+  content_type: application/vnd.oai.openapi+json
+  remediation: >-
+    Authenticate as a Klarys tenant user, or obtain an OAuth 2.0 access token from
+    https://klarys.app/api/public/o/token/.
+  note: >-
+    Notable: the response Content-Type is application/vnd.oai.openapi+json, which is the drf-spectacular
+    OpenAPI schema media type. The OpenAPI document exists behind this endpoint; only anonymous access is
+    refused.
+- status: 401
+  error: invalid_client
+  envelope: oauth2
+  observed_at: https://klarys.app/api/public/o/token/
+  content_type: application/json
+  remediation: >-
+    Register a client at the dynamic client registration endpoint
+    (https://klarys.app/api/public/o/register/) or use credentials issued by Klarys.
+- status: 403
+  envelope: null
+  observed_at: https://klarys.app/api/public/o/introspect/
+  content_type: text/html
+  note: >-
+    Returns an HTML error page rather than a JSON envelope — an agent parsing JSON gets a parse failure
+    instead of a typed error.
+- status: 404
+  envelope: null
+  observed_at: https://klarys.app/api/does-not-exist-probe/
+  content_type: text/html
+  note: >-
+    Unknown paths under /api/ return the branded HTML 404 page ("Il n'y a pas de poisson ici"), 2,729
+    bytes, even when the request carries Accept: application/json. Content negotiation is not honored on
+    the 404 path.
+- status: 405
+  envelope: null
+  observed_at: https://klarys.app/api/public/o/token/
+  content_type: text/html
+  note: GET on the POST-only token and registration endpoints returns an empty-bodied 405.
+- status: 500
+  envelope: null
+  observed_at: https://klarys.app/api/schema/
+  content_type: text/html
+  note: >-
+    The schema endpoint returns HTTP 500 (branded HTML: "Quelque chose s'est mal passé") for an anonymous
+    request without an explicit format parameter, and again for ?format=openapi-json, while
+    ?format=json returns a clean 401. A defect worth reporting to the provider: the unauthenticated path
+    through the schema view raises rather than refusing.
+summary:
+  problem_count: 6
+  rfc9457: false
+  json_envelope_coverage: partial
+  note: 3 of 6 observed statuses return HTML rather than a JSON error envelope.
+gaps:
+- No published error-code reference; the numeric `code` space (1003 observed) is undocumented.
+- 403, 404, 405 and 500 responses on API paths return HTML, so a machine client cannot parse them.
+x-evidence:
+  fetched: '2026-08-17'
+  probes:
+  - url: https://klarys.app/api/schema/?format=json
+    status: 401
+    content_type: application/vnd.oai.openapi+json
+  - url: https://klarys.app/api/public/o/token/
+    status: 401
+    content_type: application/json
+  - url: https://klarys.app/api/does-not-exist-probe/
+    status: 404
+    content_type: text/html

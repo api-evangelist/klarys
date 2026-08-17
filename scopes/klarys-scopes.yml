@@ -1,0 +1,88 @@
+generated: '2026-08-17'
+method: probed
+source: https://klarys.app/.well-known/oauth-authorization-server
+docs: null
+note: >-
+  Klarys publishes its OAuth 2.0 scope list anonymously in the RFC 8414 authorization-server metadata
+  document, but publishes no scopes/permissions reference page, so descriptions below are recorded as
+  unpublished rather than guessed. Six scopes are advertised. Two of them — mcp:read and mcp:write — are
+  the only public evidence that Klarys operates a Model Context Protocol surface; no MCP endpoint was
+  reachable anonymously (see mcp/klarys-mcp.yml).
+schemes:
+- name: OAuth2
+  source: well-known/klarys-oauth-authorization-server.json
+  issuer: https://klarys.app/api/public/o
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://klarys.app/api/public/o/authorize/
+    tokenUrl: https://klarys.app/api/public/o/token/
+    code_challenge_methods:
+    - S256
+  - flow: clientCredentials
+    tokenUrl: https://klarys.app/api/public/o/token/
+scopes:
+- scope: read
+  description: null
+  description_published: false
+  flows:
+  - authorizationCode
+  - clientCredentials
+  sources:
+  - well-known/klarys-oauth-authorization-server.json
+- scope: write
+  description: null
+  description_published: false
+  flows:
+  - authorizationCode
+  - clientCredentials
+  sources:
+  - well-known/klarys-oauth-authorization-server.json
+- scope: groups
+  description: null
+  description_published: false
+  flows:
+  - authorizationCode
+  - clientCredentials
+  sources:
+  - well-known/klarys-oauth-authorization-server.json
+- scope: introspection
+  description: null
+  description_published: false
+  note: >-
+    Django OAuth Toolkit convention — grants a client the right to call the token introspection endpoint
+    at https://klarys.app/api/public/o/introspect/.
+  flows:
+  - clientCredentials
+  sources:
+  - well-known/klarys-oauth-authorization-server.json
+- scope: mcp:read
+  description: null
+  description_published: false
+  note: Read scope for a Model Context Protocol surface; no MCP endpoint is anonymously discoverable.
+  flows:
+  - authorizationCode
+  - clientCredentials
+  sources:
+  - well-known/klarys-oauth-authorization-server.json
+- scope: mcp:write
+  description: null
+  description_published: false
+  note: Write scope for a Model Context Protocol surface; no MCP endpoint is anonymously discoverable.
+  flows:
+  - authorizationCode
+  - clientCredentials
+  sources:
+  - well-known/klarys-oauth-authorization-server.json
+summary:
+  scope_count: 6
+  descriptions_published: 0
+  mcp_scopes: 2
+gaps:
+- No scopes/permissions reference page is published, so no scope carries a documented meaning.
+- The metadata does not bind scopes to individual flows; the flow lists above reflect the grant types
+  the server advertises, not a per-scope restriction Klarys publishes.
+x-evidence:
+  fetched: '2026-08-17'
+  url: https://klarys.app/.well-known/oauth-authorization-server
+  http_status: 200
+  content_type: application/json

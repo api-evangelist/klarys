@@ -1,0 +1,95 @@
+generated: '2026-08-17'
+method: probed
+source: https://klarys.app/.well-known/oauth-authorization-server
+note: >-
+  Derived from the RFC 8414 authorization-server metadata Klarys serves anonymously. There is no public
+  OpenAPI to derive securitySchemes from and no public authentication documentation page, so this profile
+  is built entirely from the machine-readable metadata document plus observed endpoint behaviour. Klarys
+  publishes no developer portal; the tenant login is at https://klarys.app/fr/accounts/login/.
+summary:
+  types:
+  - oauth2
+  api_key_in: []
+  oauth2_flows:
+  - authorizationCode
+  - clientCredentials
+  pkce: S256
+  dynamic_client_registration: true
+  token_introspection: true
+  token_revocation: true
+  openid_connect: false
+schemes:
+- name: OAuth2
+  type: oauth2
+  issuer: https://klarys.app/api/public/o
+  sources:
+  - well-known/klarys-oauth-authorization-server.json
+  grant_types:
+  - authorization_code
+  - client_credentials
+  - refresh_token
+  response_types:
+  - code
+  code_challenge_methods:
+  - S256
+  authorization_response_iss_parameter_supported: true
+  client_id_metadata_document_supported: false
+  endpoints:
+    authorization: https://klarys.app/api/public/o/authorize/
+    token: https://klarys.app/api/public/o/token/
+    revocation: https://klarys.app/api/public/o/revoke_token/
+    introspection: https://klarys.app/api/public/o/introspect/
+    registration: https://klarys.app/api/public/o/register/
+  token_endpoint_auth_methods:
+  - none
+  - client_secret_post
+  - client_secret_basic
+  revocation_endpoint_auth_methods:
+  - none
+  - client_secret_post
+  - client_secret_basic
+  introspection_endpoint_auth_methods:
+  - none
+  - client_secret_post
+  - client_secret_basic
+  scopes:
+  - groups
+  - introspection
+  - mcp:read
+  - mcp:write
+  - read
+  - write
+  scopes_artifact: scopes/klarys-scopes.yml
+endpoint_probes:
+- url: https://klarys.app/api/public/o/authorize/
+  method: GET
+  status: 302
+  note: redirects (missing client_id / unauthenticated) — endpoint is live
+- url: https://klarys.app/api/public/o/token/
+  method: GET
+  status: 405
+  note: method not allowed — POST-only token endpoint is live
+- url: https://klarys.app/api/public/o/register/
+  method: GET
+  status: 405
+  note: method not allowed — POST-only dynamic client registration endpoint is live
+- url: https://klarys.app/api/public/o/introspect/
+  method: GET
+  status: 403
+  note: forbidden without credentials — endpoint is live
+- url: https://klarys.app/api/schema/
+  method: GET
+  status: 401
+  note: 'schema endpoint exists but is customer-gated: {"code":1003,"error":"User is unauthenticated"}'
+gaps:
+- No public authentication documentation page.
+- No OpenID Connect discovery document (/.well-known/openid-configuration is 404), so the metadata
+  advertises OAuth 2.0 only, not OIDC.
+- No RFC 9728 protected-resource metadata, which is what an MCP client needs to locate the
+  authorization server from a resource URL.
+- Scope descriptions are not published; only scope names are discoverable.
+x-evidence:
+  fetched: '2026-08-17'
+  url: https://klarys.app/.well-known/oauth-authorization-server
+  http_status: 200
+  content_type: application/json
