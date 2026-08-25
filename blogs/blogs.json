@@ -1,0 +1,14 @@
+{
+  "repo": "klarys",
+  "feeds": [
+    {
+      "source": "https://www.klarys.io/en/contact",
+      "feed_url": "https://www.klarys.io/en/contact",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-08-22T20:20:02Z"
+}
