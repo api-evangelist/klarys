@@ -12,6 +12,9 @@ description: 'Klarys — formerly ProcSea, renamed in 2023 — is a French SaaS 
   document anonymously — including mcp:read and mcp:write scopes — but no public API reference, OpenAPI, or
   developer portal: the schema endpoint requires an authenticated tenant account.'
 url: https://raw.githubusercontent.com/api-evangelist/klarys/refs/heads/main/apis.yml
+x-api-posture: no-product-api
+x-api-posture-basis: observed
+x-api-posture-note: "The tenant application runs at klarys.app and publishes an RFC 8414 OAuth 2.0 authorization-server metadata document anonymously — including mcp:read and mcp:write scopes — but no public API reference"
 x-type: company
 x-source: serena-portfolio
 x-tier: stub
