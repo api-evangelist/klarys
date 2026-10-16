@@ -2,6 +2,13 @@
   "repo": "klarys",
   "feeds": [
     {
+      "source": "https://www.klarys.io/en/resources",
+      "feed_url": "https://www.klarys.io/en/resources",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    },
+    {
       "source": "https://www.klarys.io/en/contact",
       "feed_url": "https://www.klarys.io/en/contact",
       "title": "",
@@ -10,5 +17,5 @@
     }
   ],
   "post_count": 0,
-  "fetched": "2026-10-03T12:30:02Z"
+  "fetched": "2026-10-10T13:15:00Z"
 }
