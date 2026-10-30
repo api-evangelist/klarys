@@ -64,6 +64,108 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Klarys is a company surfaced as a portfolio company of serena and added to the API Evangelist network as a stub for enrichment. Sector: saas. This profile is a lead awaiting the enrichment pipeline.
+Klarys — formerly ProcSea, renamed in 2023 — is a French SaaS eProcurement platform built for the fresh-food supply chain: seafood, fruit and vegetables, meat and dairy. It connects retail, wholesale and foodservice buyers with their suppliers, wholesalers and mareyeurs through a standardized fresh-food product catalog, a supplier sales interface, a centralized purchasing interface, a central purchasing module for store networks, a supplier invoicing module and a business-intelligence module. Klarys states that the platform "integrates with all your business systems and applications via API and EDI" — ERP, accounting tools and product reference systems. Founded in 2016 in Rennes, France with operations in Switzerland, it is a Serena portfolio company, a member of the SAP.iO acceleration program and listed on the SAP Store. The tenant application runs at klarys.app and publishes an RFC 8414 OAuth 2.0 authorization-server metadata document anonymously — including mcp:read and mcp:write scopes — but no public API reference, OpenAPI, or developer portal: the schema endpoint requires an authenticated tenant account.
 
-Source: portfolio company of [serena](https://github.com/api-evangelist/serena) — https://www.klarys.io/
+**Areas:** Company · Software-as-a-Service · eProcurement · Procurement · Supply Chain · Food and Beverage · Seafood · Fresh Food · Retail · EDI · Invoicing · France
+
+## Klarys on APIs.io
+
+Everything profiled for Klarys is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/klarys/](https://apis.io/providers/klarys/)** — or go straight to one of the APIs or properties below.
+
+### APIs (1)
+
+- [Klarys Platform API](https://apis.io/apis/klarys/klarys-platform-api/) — The API surface behind the Klarys tenant application at klarys.app. Klarys markets API and EDI integration with customer ERP, accounting and…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Klarys Authentication](https://apis.io/security/klarys/klarys-authentication/)
+- [Klarys Domain Security](https://apis.io/security/klarys/klarys-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Klarys Scopes](https://apis.io/scopes/klarys/klarys-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Klarys Plans Pricing](https://apis.io/plans/klarys/klarys-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Klarys Rate Limits](https://apis.io/rate-limits/klarys/klarys-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.klarys.io/)
+- [Support](https://www.klarys.io/en/service-client)
+- [Blog](https://www.klarys.io/en/resources)
+- [Terms of service](https://www.klarys.io/en/terms-of-service)
+- [Privacy policy](https://www.klarys.io/en/privacy-policy)
+- [GitHub](https://github.com/procsea)
+- [Status](https://status.klarys.io/)
+
+## API Evangelist rating
+
+**Kin Score 23.5** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 67.0 |
+| Contract quality | 0.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 18.4 |
+| Developer ergonomics | 19.0 |
+| Access clarity | 27.6 |
+
+**Agent readiness 20.5** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+
+**Regulatory alignment 34.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/klarys/](https://apis.io/providers/klarys/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Klarys: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/klarys/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
